@@ -18,13 +18,17 @@ export const metadata: Metadata = {
     description: 'next.js app',
 };
 
+export const viewport = {
+    colorScheme: 'dark',
+};
+
 export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='ru-RU'>
+        <html lang='ru-RU' className='dark'>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 {children}
