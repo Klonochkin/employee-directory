@@ -11,13 +11,9 @@ export default async function HomePage({
 }) {
     const { name, page, sort } = await searchParams;
     let data = await fetchEmployees(name, Number(page), sort);
-    const employee: Employees[] = data.map((row) => ({
-        last_name: row.last_name,
-        first_name: row.first_name,
-        father_name: row.father_name,
-        bday: new Date(row.bday),
-        position: row.position,
-        phone_number: row.phone_number,
+    const employee: Employees[] = data.map(({ bday, ...other }) => ({
+        bday: new Date(bday),
+        ...other,
     }));
 
     const count = await getTotalCount(name);

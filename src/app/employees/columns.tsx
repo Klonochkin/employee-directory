@@ -1,11 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
-import { removeSearchParam, addOrUpdateParam } from '@/app/params';
-import { ArrowUpDown } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { DropdownMenuRadioGroupDemo } from '../dropdown-sortmenu';
 
 export type Employees = {
     last_name: string;
@@ -15,31 +11,6 @@ export type Employees = {
     position: string;
     phone_number: string;
 };
-
-function ToggleSort() {
-    const [sort, setSort] = useState(0);
-    const sortValue = ['desc', 'asc', 'none'];
-    const router = useRouter();
-    const pathname = usePathname();
-    return (
-        <Button
-            variant='ghost'
-            onClick={() => {
-                sort === 2
-                    ? removeSearchParam('sort', pathname, router)
-                    : addOrUpdateParam(
-                          'sort',
-                          sortValue[sort],
-                          pathname,
-                          router,
-                      );
-                setSort((prev) => (prev + 1 >= 3 ? 0 : prev + 1));
-            }}>
-            День рождения
-            <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-    );
-}
 
 export const columns: ColumnDef<Employees, unknown>[] = [
     {
@@ -56,7 +27,7 @@ export const columns: ColumnDef<Employees, unknown>[] = [
     },
     {
         accessorKey: 'bday',
-        header: () => <ToggleSort></ToggleSort>,
+        header: () => <DropdownMenuRadioGroupDemo></DropdownMenuRadioGroupDemo>,
         cell: (info) =>
             new Date(String(info.getValue())).toISOString().split('T')[0],
     },
