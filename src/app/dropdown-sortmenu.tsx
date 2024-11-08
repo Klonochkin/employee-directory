@@ -12,7 +12,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronsUpDown } from 'lucide-react';
 import { addOrUpdateParam, removeSearchParam } from './params';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -21,7 +21,7 @@ export function DropdownMenuRadioGroupDemo() {
     const router = useRouter();
     const pathname = usePathname();
     React.useEffect(() => {
-        if (position !== 'none') {
+        if (position !== '') {
             addOrUpdateParam('sort', position, pathname, router);
         } else {
             removeSearchParam('sort', pathname, router);
@@ -32,8 +32,14 @@ export function DropdownMenuRadioGroupDemo() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant='ghost'>
-                    День рождения
-                    <ArrowUpDown />
+                    <span>День рождения</span>
+                    {position === 'desc' ? (
+                        <ArrowDown />
+                    ) : position === 'asc' ? (
+                        <ArrowUp />
+                    ) : (
+                        <ChevronsUpDown />
+                    )}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56'>
@@ -41,12 +47,15 @@ export function DropdownMenuRadioGroupDemo() {
                     value={position}
                     onValueChange={setPosition}>
                     <DropdownMenuRadioItem value='desc'>
+                        <ArrowUp height='15' />
                         По убыванию
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value='asc'>
+                        <ArrowDown height='15' />
                         По возврастанию
                     </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value='none'>
+                    <DropdownMenuRadioItem value=''>
+                        <ChevronsUpDown height='15' />
                         Без сортировки
                     </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
