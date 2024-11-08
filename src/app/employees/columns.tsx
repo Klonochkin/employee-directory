@@ -1,8 +1,33 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { DropdownMenuRadioGroupDemo } from '../dropdown-sortmenu';
 import { Employees } from '@/app/db/schema';
+
+function convertDate(info: CellContext<Employees, unknown>) {
+    const months = [
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ];
+    const date = new Date(String(info.getValue()));
+    const result =
+        date.getDate() +
+        ' ' +
+        months[date.getMonth()] +
+        ' ' +
+        date.getFullYear();
+    return result;
+}
 
 export const columns: ColumnDef<Employees, unknown>[] = [
     {
@@ -20,8 +45,7 @@ export const columns: ColumnDef<Employees, unknown>[] = [
     {
         accessorKey: 'bday',
         header: () => <DropdownMenuRadioGroupDemo></DropdownMenuRadioGroupDemo>,
-        cell: (info) =>
-            new Date(String(info.getValue())).toISOString().split('T')[0],
+        cell: (info) => convertDate(info),
     },
     {
         accessorKey: 'position',
