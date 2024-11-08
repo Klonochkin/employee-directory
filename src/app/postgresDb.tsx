@@ -1,18 +1,9 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { pgTable, serial, text, date } from 'drizzle-orm/pg-core';
+import { employee } from '@/app/db/schema';
 import { sql, asc, desc } from 'drizzle-orm';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
-export const employee = pgTable('employee', {
-    id: serial('id').primaryKey(),
-    last_name: text('last_name').notNull(),
-    first_name: text('first_name').notNull(),
-    father_name: text('father_name').notNull(),
-    bday: date('bday').notNull(),
-    position: text('position').notNull(),
-    phone_number: text('phone_number').notNull(),
-});
 export async function fetchEmployees(name = '', page: number, sort?: string) {
     let offset = (page - 1) * 10;
     offset = offset >= 0 ? offset : 0;

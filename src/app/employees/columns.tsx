@@ -2,15 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { DropdownMenuRadioGroupDemo } from '../dropdown-sortmenu';
-
-export type Employees = {
-    last_name: string;
-    first_name: string;
-    father_name: string;
-    bday: Date;
-    position: string;
-    phone_number: string;
-};
+import { Employees } from '@/app/db/schema';
 
 export const columns: ColumnDef<Employees, unknown>[] = [
     {

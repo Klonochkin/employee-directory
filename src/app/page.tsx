@@ -1,7 +1,8 @@
 import { getTotalCount, fetchEmployees } from './postgresDb';
 import { Search } from '@/app/search';
 
-import { Employees, columns } from '@/app/employees/columns';
+import { columns } from '@/app/employees/columns';
+import { Employees } from '@/app/db/schema';
 import { DataTable } from '@/app/employees/data-table';
 
 export default async function HomePage({
@@ -11,10 +12,6 @@ export default async function HomePage({
 }) {
     const { name, page, sort } = await searchParams;
     let data = await fetchEmployees(name, Number(page), sort);
-    const employee: Employees[] = data.map(({ bday, ...other }) => ({
-        bday: new Date(bday),
-        ...other,
-    }));
 
     const count = await getTotalCount(name);
     return (
@@ -24,7 +21,7 @@ export default async function HomePage({
             </div>
             {data && data.length !== 0 ? (
                 <DataTable
-                    data={employee}
+                    data={data}
                     columns={columns}
                     initial={Number(page) ?? 1}
                     count={count}
