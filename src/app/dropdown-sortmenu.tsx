@@ -6,28 +6,19 @@ import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-    DropdownMenuSeparator,
+    DropdownMenuGroup,
+    DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ArrowDown, ArrowUp, ArrowUpDown, ChevronsUpDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { addOrUpdateParam, removeSearchParam } from './params';
 import { useRouter, usePathname } from 'next/navigation';
 
 export function DropdownMenuRadioGroupDemo() {
-    const [position, setPosition] = React.useState('');
+    const params = new URLSearchParams(window.location.search);
+    const [position, setPosition] = React.useState(params.get('sort'));
     const router = useRouter();
     const pathname = usePathname();
-    React.useEffect(() => {
-        if (position !== '') {
-            addOrUpdateParam('sort', position, pathname, router);
-        } else {
-            removeSearchParam('sort', pathname, router);
-        }
-    }, [position]);
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -43,22 +34,32 @@ export function DropdownMenuRadioGroupDemo() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56'>
-                <DropdownMenuRadioGroup
-                    value={position}
-                    onValueChange={setPosition}>
-                    <DropdownMenuRadioItem value='desc'>
+                <DropdownMenuGroup>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            setPosition('desc');
+                            addOrUpdateParam('sort', 'desc', pathname, router);
+                        }}>
                         <ArrowUp height='15' />
                         По убыванию
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value='asc'>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            setPosition('asc');
+                            addOrUpdateParam('sort', 'asc', pathname, router);
+                        }}>
                         <ArrowDown height='15' />
                         По возврастанию
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value=''>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            setPosition('');
+                            removeSearchParam('sort', pathname, router);
+                        }}>
                         <ChevronsUpDown height='15' />
                         Без сортировки
-                    </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
     );
