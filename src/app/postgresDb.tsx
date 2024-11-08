@@ -4,7 +4,7 @@ import { sql, asc, desc } from 'drizzle-orm';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
-export async function fetchEmployees(name = '', page: number, sort?: string) {
+export async function getEmployees(name = '', page: number, sort?: string) {
     let offset = (page - 1) * 10;
     offset = offset >= 0 ? offset : 0;
     name = name.toLowerCase();

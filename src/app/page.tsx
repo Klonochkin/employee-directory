@@ -1,4 +1,4 @@
-import { getTotalCount, fetchEmployees } from './postgresDb';
+import { getTotalCount, getEmployees } from './postgresDb';
 import { Search } from '@/app/search';
 
 import { columns } from '@/app/employees/columns';
@@ -11,7 +11,7 @@ export default async function HomePage({
     searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
     const { name, page, sort } = await searchParams;
-    let data = await fetchEmployees(name, Number(page), sort);
+    let data = await getEmployees(name, Number(page), sort);
 
     const count = await getTotalCount(name);
     return (
