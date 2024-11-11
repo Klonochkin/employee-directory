@@ -5,7 +5,7 @@ import { removeSearchParam, addAndRemoveParam } from '@/app/params';
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { Cross, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +22,7 @@ export function Search() {
 
     return (
         <div className='relative'>
-            <Label className='text-sm font-sans mx-4 '>
+            <Label className='mx-4 font-sans text-sm'>
                 <Input
                     ref={inputRef}
                     type='text'
@@ -45,7 +45,7 @@ export function Search() {
                 <Button
                     variant='ghost'
                     className={cn(
-                        'absolute right-1 top-[28px] p-2 m-0 h-auto',
+                        'absolute right-1 top-[28px] m-0 h-auto p-2',
                         inputRef.current?.value ? 'not-sr-only' : 'sr-only',
                     )}
                     onClick={() => {
@@ -54,10 +54,7 @@ export function Search() {
                             removeSearchParam('name', pathname, router);
                         }
                     }}>
-                    <Plus
-                        className='rotate-45 transform scale-125'
-                        strokeWidth='2'
-                    />
+                    <Plus className='rotate-45 scale-125' strokeWidth='2' />
                 </Button>
             </Label>
         </div>

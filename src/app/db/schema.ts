@@ -1,9 +1,6 @@
 import 'dotenv/config';
 import { InferSelectModel } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/node-postgres';
 import { date, pgTable, serial, text } from 'drizzle-orm/pg-core';
-
-const db = drizzle(process.env.DATABASE_URL!);
 
 export const employee = pgTable('employee', {
     id: serial('id').primaryKey(),

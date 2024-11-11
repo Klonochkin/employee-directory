@@ -15,10 +15,16 @@ import { addOrUpdateParam, removeSearchParam } from './params';
 import { useRouter, usePathname } from 'next/navigation';
 
 export function DropdownMenuRadioGroupDemo() {
-    const params = new URLSearchParams(window.location.search);
-    const [position, setPosition] = React.useState(params.get('sort'));
+    const [position, setPosition] = React.useState('');
     const router = useRouter();
     const pathname = usePathname();
+
+    // Используем useEffect для инициализации состояния
+    React.useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const sortParam = params.get('sort');
+        setPosition(sortParam || '');
+    }, []);
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
