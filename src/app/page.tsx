@@ -3,6 +3,9 @@ import { Search } from '@/app/search';
 
 import { columns } from '@/app/employees/columns';
 import { DataTable } from '@/app/employees/data-table';
+import { ConfirmV2 } from './delete-form-data';
+import { DialogDemo } from './dialog-edit-form';
+import { Toaster } from 'sonner';
 
 export default async function HomePage({
     searchParams,
@@ -28,6 +31,9 @@ export default async function HomePage({
             ) : (
                 'Список сотрудников пуст'
             )}
+            <ConfirmV2 />
+            <DialogDemo />
+            <Toaster />
         </div>
     );
 }

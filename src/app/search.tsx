@@ -32,13 +32,7 @@ export function Search() {
                         if (value.trim() === '') {
                             removeSearchParam('name', pathname, router);
                         } else {
-                            addAndRemoveParam(
-                                'name',
-                                'page',
-                                value,
-                                pathname,
-                                router,
-                            );
+                            addAndRemoveParam('name', 'page', value);
                         }
                     }}
                 />

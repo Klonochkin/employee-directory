@@ -1,27 +1,21 @@
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { redirect } from 'next/navigation';
 
-export function addOrUpdateParam(
-    key: string,
-    value: string,
-    pathname: string,
-    router: AppRouterInstance,
-) {
+export function addOrUpdateParam(key: string, value: string) {
     const newParams = new URLSearchParams(window.location.search);
     newParams.set(key, value);
-    router.push(`${pathname}?${newParams.toString()}`);
+    redirect(`/?${newParams.toString()}`);
 }
 
 export function addAndRemoveParam(
     keyAdd: string,
     keyRemove: string,
     valueAdd: string,
-    pathname: string,
-    router: AppRouterInstance,
 ) {
     const newParams = new URLSearchParams(window.location.search);
     newParams.set(keyAdd, valueAdd);
     newParams.delete(keyRemove);
-    router.push(`${pathname}?${newParams.toString()}`);
+    redirect(`/?${newParams.toString()}`);
 }
 
 export function removeSearchParam(
