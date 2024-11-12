@@ -20,7 +20,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
@@ -64,7 +64,7 @@ export function DataTable<TData, TValue>({
             removeSearchParam('page', pathname, router);
         }
         setPageIndex(page - 1);
-    }, [searchParams, table]);
+    }, [searchParams, table, pathname, router]);
 
     return (
         <div>
@@ -128,14 +128,16 @@ export function DataTable<TData, TValue>({
                     variant='outline'
                     size='sm'
                     onClick={() => {
-                        pageIndex === 1
-                            ? removeSearchParam('page', pathname, router)
-                            : addOrUpdateParam(
-                                  'page',
-                                  String(pageIndex),
-                                  pathname,
-                                  router,
-                              );
+                        if (pageIndex === 1) {
+                            removeSearchParam('page', pathname, router);
+                        } else {
+                            addOrUpdateParam(
+                                'page',
+                                String(pageIndex),
+                                pathname,
+                                router,
+                            );
+                        }
                     }}
                     disabled={
                         Number(searchParams.get('page') ?? 1) <= 1

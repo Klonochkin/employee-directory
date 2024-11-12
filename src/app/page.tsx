@@ -2,7 +2,6 @@ import { getTotalCount, getEmployees } from './postgresDb';
 import { Search } from '@/app/search';
 
 import { columns } from '@/app/employees/columns';
-import { Employees } from '@/app/db/schema';
 import { DataTable } from '@/app/employees/data-table';
 
 export default async function HomePage({
@@ -11,11 +10,11 @@ export default async function HomePage({
     searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
     const { name, page, sort } = await searchParams;
-    let data = await getEmployees(name, Number(page), sort);
+    const data = await getEmployees(name, Number(page), sort);
 
     const count = await getTotalCount(name);
     return (
-        <div className='flex flex-col items-center mt-4'>
+        <div className='mt-4 flex flex-col items-center'>
             <div className='mb-10'>
                 <Search></Search>
             </div>
@@ -23,7 +22,7 @@ export default async function HomePage({
                 <DataTable
                     data={data}
                     columns={columns}
-                    initial={Number(page) ?? 1}
+                    initial={Number(page) || 1}
                     count={count}
                 />
             ) : (
