@@ -38,6 +38,12 @@ export function DataTable<TData, TValue>({
     initial = 1,
     count,
 }: DataTableProps<TData, TValue>) {
+    useEffect(() => {
+        console.log(count / 10);
+        if (data.length === 0 && count !== 0) {
+            addOrUpdateParam('page', String(Math.floor(count / 10)));
+        }
+    }, [count, data]);
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [pageIndex, setPageIndex] = React.useState(initial - 1);
     const table = useReactTable({
@@ -66,6 +72,7 @@ export function DataTable<TData, TValue>({
         }
         setPageIndex(page - 1);
     }, [searchParams, table, pathname, router]);
+
     return (
         <div>
             <div className='rounded-md border'>
@@ -124,7 +131,7 @@ export function DataTable<TData, TValue>({
                                 <TableCell
                                     colSpan={columns.length}
                                     className='h-24 text-center'>
-                                    Список сотрудников пуст
+                                    Страница пустая
                                 </TableCell>
                             </TableRow>
                         )}

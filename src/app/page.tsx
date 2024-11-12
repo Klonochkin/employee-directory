@@ -21,16 +21,12 @@ export default async function HomePage({
             <div className='mb-10'>
                 <Search></Search>
             </div>
-            {data && data.length !== 0 ? (
                 <DataTable
                     data={data}
                     columns={columns}
                     initial={Number(page) || 1}
                     count={count}
                 />
-            ) : (
-                'Список сотрудников пуст'
-            )}
             <ConfirmV2 />
             <DialogDemo />
             <Toaster />
