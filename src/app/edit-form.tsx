@@ -199,17 +199,7 @@ export function EditForm() {
                     control={form.control}
                     name='id'
                     render={({ field }) => (
-                        <FormItem className='sr-only'>
-                            <FormLabel>id</FormLabel>
-                            <FormControl>
-                                <Input
-                                    id='id'
-                                    placeholder='+79000000000'
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
+                        <Input type='hidden' id='id' {...field} />
                     )}
                 />
                 <Button
