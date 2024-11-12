@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { addOrUpdateParam } from '../params';
 import { useState } from 'react';
 import { convertDateToText } from '../convert-date';
@@ -56,9 +56,11 @@ function DropMenu({
                         buttonDialog.click();
                         addOrUpdateParam('selected', String(row.id));
                     }}>
+                    <Pencil />
                     Редактировать
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                    className='bg-[#7c1515]'
                     onClick={() => {
                         const form: HTMLFormElement | null =
                             document.querySelector('form');
@@ -71,6 +73,7 @@ function DropMenu({
                         }
                         form?.submit();
                     }}>
+                    <Trash2 />
                     Удалить
                 </DropdownMenuItem>
             </DropdownMenuContent>
