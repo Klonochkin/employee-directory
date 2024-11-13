@@ -3,8 +3,8 @@ import { Search } from '@/app/search';
 
 import { columns } from '@/app/employees/columns';
 import { DataTable } from '@/app/employees/data-table';
-import { ConfirmV2 } from './delete-form-data';
-import { DialogDemo } from './dialog-edit-form';
+import { DeleteForm } from './delete-form-data';
+import { EditDialog } from './dialog-edit-form';
 import { Toaster } from 'sonner';
 import { ContextProvider } from './context';
 
@@ -29,8 +29,8 @@ export default async function HomePage({
                     initial={Number(page) || 1}
                     count={count}
                 />
-                <ConfirmV2 />
-                <DialogDemo />
+                <DeleteForm />
+                <EditDialog />
                 <Toaster />
             </div>
         </ContextProvider>

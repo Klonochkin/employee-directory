@@ -15,7 +15,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { Context } from './context';
 
-export function DialogDemo() {
+export function EditDialog() {
     const context = useContext(Context);
     const { isOpenDialog, setIsOpenDialog } = context;
     const router = useRouter();
