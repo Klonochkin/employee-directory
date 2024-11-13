@@ -45,27 +45,27 @@ export async function deleteData(id: number) {
     return res;
 }
 
+interface UpdateEmployeeData {
+    last_name: string;
+    first_name: string;
+    father_name: string;
+    position: string;
+    phone_number: string;
+}
+
 export async function updateData(
-    last_name_value: string,
-    first_name_value: string,
-    father_name_value: string,
-    bday_value: string,
-    position_value: string,
-    phone_number_value: string,
-    id: string,
+    bday: string,
+    id: number,
+    other: UpdateEmployeeData,
 ) {
-    const bday_Date = convertDateToISO(bday_value);
+    const bday_Date = convertDateToISO(bday);
     const res = await db
         .update(employee)
         .set({
-            last_name: last_name_value,
-            first_name: first_name_value,
-            father_name: father_name_value,
             bday: bday_Date,
-            position: position_value,
-            phone_number: phone_number_value,
+            ...other,
         })
-        .where(eq(employee.id, Number(id)));
+        .where(eq(employee.id, id));
     return res;
 }
 

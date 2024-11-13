@@ -1,4 +1,4 @@
-import { getTotalCount, getEmployees, insertEmployees } from './postgresDb';
+import { getTotalCount, getEmployees } from './postgresDb';
 import { Search } from '@/app/search';
 
 import { columns } from '@/app/employees/columns';
@@ -15,8 +15,6 @@ export default async function HomePage({
     const { name, page, sort } = await searchParams;
     const data = await getEmployees(name, Number(page), sort);
     const count = await getTotalCount(name);
-
-    await insertEmployees();
 
     return (
         <div className='mt-4 flex flex-col items-center'>
