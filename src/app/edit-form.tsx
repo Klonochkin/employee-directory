@@ -21,21 +21,12 @@ import { toast } from 'sonner';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Context } from './context';
 import { removeSearchParam } from './params';
-export function EditForm() {
+import { Employees } from './db/schema';
+export function EditForm({ data }: { data: Employees[] }) {
     const context = useContext(Context);
     const { setIsOpenDialog } = context;
-    const values = Array(7).fill('');
     const searchParams = useSearchParams();
     const selected = searchParams.get('selected');
-    const list = [
-        '_last_name',
-        '_first_name',
-        '_father_name',
-        '_bday',
-        '_position',
-        '_phone_number',
-        '_id',
-    ];
     const form = useForm<z.infer<typeof Schemas>>({
         resolver: zodResolver(Schemas),
         defaultValues: {
@@ -48,22 +39,21 @@ export function EditForm() {
             id: '',
         },
     });
+
     const router = useRouter();
     const pathname = usePathname();
     useEffect(() => {
-        for (let i = 0; i < 7; i++) {
-            const path = selected + list[i];
-            values[i] = document.getElementById(path)?.textContent;
+        if (selected && data) {
+            form.reset({
+                last_name: data[Number(selected)].last_name,
+                first_name: data[Number(selected)].first_name,
+                father_name: data[Number(selected)].father_name,
+                bday: data[Number(selected)].bday,
+                position: data[Number(selected)].position,
+                phone_number: data[Number(selected)].phone_number,
+                id: String(data[Number(selected)].id),
+            });
         }
-        form.reset({
-            last_name: values[0],
-            first_name: values[1],
-            father_name: values[2],
-            bday: values[3],
-            position: values[4],
-            phone_number: values[5],
-            id: values[6],
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected]);
 

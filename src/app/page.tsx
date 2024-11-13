@@ -30,7 +30,7 @@ export default async function HomePage({
                     count={count}
                 />
                 <DeleteForm />
-                <EditDialog />
+                <EditDialog data={data} />
                 <Toaster />
             </div>
         </ContextProvider>

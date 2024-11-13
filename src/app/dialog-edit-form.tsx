@@ -14,8 +14,9 @@ import { removeSearchParam } from './params';
 import { usePathname, useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { Context } from './context';
+import { Employees } from './db/schema';
 
-export function EditDialog() {
+export function EditDialog({ data }: { data: Employees[] }) {
     const context = useContext(Context);
     const { isOpenDialog, setIsOpenDialog } = context;
     const router = useRouter();
@@ -40,7 +41,7 @@ export function EditDialog() {
                     <DialogTitle>Редактирование</DialogTitle>
                 </DialogHeader>
                 <div className='grid gap-4 py-4'>
-                    <EditForm />
+                    <EditForm data={data} />
                 </div>
                 <DialogFooter className='sm:justify-start'>
                     <DialogClose asChild>
