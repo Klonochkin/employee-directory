@@ -22,7 +22,6 @@ export function DialogDemo() {
     const pathname = usePathname();
 
     const handleDialogClose = (open: boolean) => {
-        console.log('!OPEN удаление селектед');
         if (!open) {
             removeSearchParam('selected', pathname, router);
             setIsOpenDialog((prev) => !prev);

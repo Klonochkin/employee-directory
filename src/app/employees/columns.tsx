@@ -11,10 +11,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { addOrUpdateParam } from '../params';
+import { addOrUpdateParam, removeSearchParam } from '../params';
 import { useContext, useState } from 'react';
 import { convertDateToText } from '../convert-date';
 import { Context } from '../context';
+import { usePathname, useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 function DropMenu({
     row,
@@ -32,10 +34,15 @@ function DropMenu({
     const [isOpen, setIsOpen] = useState(false);
     const context = useContext(Context);
     const { setIsOpenDialog } = context;
+    const router = useRouter();
+    const pathname = usePathname();
     return (
         <DropdownMenu
-            onOpenChange={() => {
+            onOpenChange={(open: boolean) => {
                 setIsOpen((prev) => !prev);
+                if (!open) {
+                    removeSearchParam('open', pathname, router);
+                }
             }}
             open={isOpen}>
             <DropdownMenuTrigger asChild>
@@ -69,7 +76,13 @@ function DropMenu({
                         if (input && row.getValue('id')) {
                             input.value = row.getValue('id');
                         }
-                        form?.submit();
+                        form?.requestSubmit();
+                        toast('Данные удалены', {
+                            action: {
+                                label: 'Скрыть',
+                                onClick: () => console.log('скрыт'),
+                            },
+                        });
                     }}>
                     <Trash2 />
                     Удалить

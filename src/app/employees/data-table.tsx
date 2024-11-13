@@ -39,7 +39,6 @@ export function DataTable<TData, TValue>({
     count,
 }: DataTableProps<TData, TValue>) {
     useEffect(() => {
-        console.log(count / 10);
         if (data.length === 0 && count !== 0) {
             addOrUpdateParam('page', String(Math.floor(count / 10)));
         }

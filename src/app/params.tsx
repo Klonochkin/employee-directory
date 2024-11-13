@@ -33,3 +33,21 @@ export function removeSearchParam(
     }
     router.push(newUrl);
 }
+
+export function removeSeveralSearchParams(
+    key: string[],
+    pathname: string,
+    router: AppRouterInstance,
+) {
+    const params = new URLSearchParams(window.location.search);
+    for (let i = 0; i < key.length; i++) {
+        params.delete(key[i]);
+    }
+    let newUrl: string = '';
+    if (params.toString() !== '') {
+        newUrl = `${pathname}?${params.toString()}`;
+    } else {
+        newUrl = `${pathname}`;
+    }
+    router.push(newUrl);
+}
