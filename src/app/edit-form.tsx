@@ -15,11 +15,15 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DatePicker } from './date-picker';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { editSomething } from './edit-data';
 import { toast } from 'sonner';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Context } from './context';
+import { removeSearchParam } from './params';
 export function EditForm() {
+    const context = useContext(Context);
+    const { setIsOpenDialog } = context;
     const values = Array(7).fill('');
     const searchParams = useSearchParams();
     const selected = searchParams.get('selected');
@@ -44,6 +48,8 @@ export function EditForm() {
             id: '',
         },
     });
+    const router = useRouter();
+    const pathname = usePathname();
     useEffect(() => {
         for (let i = 0; i < 7; i++) {
             const path = selected + list[i];
@@ -62,14 +68,6 @@ export function EditForm() {
     }, [selected]);
 
     const onSubmit = () => {
-        const tdDialog = document.getElementById(
-            selected + '_actions',
-        ) as HTMLElement;
-        const buttonDialog = tdDialog.querySelector(
-            'button',
-        ) as HTMLButtonElement;
-        buttonDialog.click();
-
         const form = document.getElementById('edit-form') as HTMLFormElement;
         form.requestSubmit();
         toast('Данные обновлены', {
@@ -78,10 +76,9 @@ export function EditForm() {
                 onClick: () => console.log('скрыт'),
             },
         });
-        const button = document.getElementById(
-            'dialog-close',
-        ) as HTMLButtonElement;
-        button.click();
+        setIsOpenDialog((prev) => !prev);
+
+        removeSearchParam('selected', pathname, router);
     };
 
     return (

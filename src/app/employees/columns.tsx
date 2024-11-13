@@ -12,8 +12,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { addOrUpdateParam } from '../params';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { convertDateToText } from '../convert-date';
+import { Context } from '../context';
 
 function DropMenu({
     row,
@@ -29,6 +30,8 @@ function DropMenu({
     }>;
 }) {
     const [isOpen, setIsOpen] = useState(false);
+    const context = useContext(Context);
+    const { setIsOpenDialog } = context;
     return (
         <DropdownMenu
             onOpenChange={() => {
@@ -37,9 +40,6 @@ function DropMenu({
             open={isOpen}>
             <DropdownMenuTrigger asChild>
                 <Button
-                    onClick={() => {
-                        setIsOpen((prev) => !prev);
-                    }}
                     id='dropDownButton'
                     variant='ghost'
                     className='size-8 p-0'>
@@ -50,10 +50,8 @@ function DropMenu({
             <DropdownMenuContent align='end'>
                 <DropdownMenuItem
                     onClick={() => {
-                        const buttonDialog = document.getElementById(
-                            'buttonDialog',
-                        ) as HTMLButtonElement;
-                        buttonDialog.click();
+                        setIsOpenDialog((prev) => !prev);
+                        setIsOpen((prev) => !prev);
                         addOrUpdateParam('selected', String(row.id));
                     }}>
                     <Pencil />

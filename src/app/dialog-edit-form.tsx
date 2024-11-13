@@ -12,19 +12,25 @@ import {
 import { EditForm } from './edit-form';
 import { removeSearchParam } from './params';
 import { usePathname, useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { Context } from './context';
 
 export function DialogDemo() {
+    const context = useContext(Context);
+    const { isOpenDialog, setIsOpenDialog } = context;
     const router = useRouter();
     const pathname = usePathname();
 
     const handleDialogClose = (open: boolean) => {
+        console.log('!OPEN удаление селектед');
         if (!open) {
             removeSearchParam('selected', pathname, router);
+            setIsOpenDialog((prev) => !prev);
         }
     };
 
     return (
-        <Dialog onOpenChange={handleDialogClose}>
+        <Dialog open={isOpenDialog} onOpenChange={handleDialogClose}>
             <DialogTrigger asChild>
                 <Button id='buttonDialog' variant='outline' className='sr-only'>
                     Edit Profile

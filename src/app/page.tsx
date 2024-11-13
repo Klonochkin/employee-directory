@@ -6,6 +6,7 @@ import { DataTable } from '@/app/employees/data-table';
 import { ConfirmV2 } from './delete-form-data';
 import { DialogDemo } from './dialog-edit-form';
 import { Toaster } from 'sonner';
+import { ContextProvider } from './context';
 
 export default async function HomePage({
     searchParams,
@@ -17,19 +18,21 @@ export default async function HomePage({
     const count = await getTotalCount(name);
 
     return (
-        <div className='mt-4 flex flex-col items-center'>
-            <div className='mb-10'>
-                <Search></Search>
+        <ContextProvider>
+            <div className='mt-4 flex flex-col items-center'>
+                <div className='mb-10'>
+                    <Search></Search>
+                </div>
+                <DataTable
+                    data={data}
+                    columns={columns}
+                    initial={Number(page) || 1}
+                    count={count}
+                />
+                <ConfirmV2 />
+                <DialogDemo />
+                <Toaster />
             </div>
-            <DataTable
-                data={data}
-                columns={columns}
-                initial={Number(page) || 1}
-                count={count}
-            />
-            <ConfirmV2 />
-            <DialogDemo />
-            <Toaster />
-        </div>
+        </ContextProvider>
     );
 }
