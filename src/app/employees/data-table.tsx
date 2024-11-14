@@ -38,11 +38,6 @@ export function DataTable<TData, TValue>({
     initial = 1,
     count,
 }: DataTableProps<TData, TValue>) {
-    useEffect(() => {
-        if (data.length === 0 && count !== 0) {
-            addOrUpdateParam('page', String(Math.floor(count / 10)));
-        }
-    }, [count, data]);
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [pageIndex, setPageIndex] = React.useState(initial - 1);
     const table = useReactTable({

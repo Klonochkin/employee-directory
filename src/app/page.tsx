@@ -7,6 +7,7 @@ import { DeleteForm } from './delete-form-data';
 import { EditDialog } from './dialog-edit-form';
 import { Toaster } from 'sonner';
 import { ContextProvider } from './context';
+import { DataTableEmpty } from './employees/data-table-empty';
 
 export default async function HomePage({
     searchParams,
@@ -23,12 +24,16 @@ export default async function HomePage({
                 <div className='mb-10'>
                     <Search></Search>
                 </div>
-                <DataTable
-                    data={data}
-                    columns={columns}
-                    initial={Number(page) || 1}
-                    count={count}
-                />
+                {data && data.length !== 0 ? (
+                    <DataTable
+                        data={data}
+                        columns={columns}
+                        initial={Number(page) || 1}
+                        count={count}
+                    />
+                ) : (
+                    <DataTableEmpty count={count} />
+                )}
                 <DeleteForm />
                 <EditDialog data={data} />
                 <Toaster />
