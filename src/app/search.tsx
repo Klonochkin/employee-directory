@@ -26,9 +26,6 @@ export function Search() {
         if (params.get('open') !== null) {
             removeList.push('open');
         }
-        if (params.get('selected')) {
-            removeList.push('selected');
-        }
         if (removeList.length !== 0) {
             removeSeveralSearchParams(removeList, pathname, router);
         }

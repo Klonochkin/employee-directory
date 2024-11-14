@@ -12,9 +12,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { addOrUpdateParam, removeSearchParam } from '../params';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { convertDateToText } from '../convert-date';
-import { Context } from '../context';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -32,8 +31,6 @@ function DropMenu({
     }>;
 }) {
     const [isOpen, setIsOpen] = useState(false);
-    const context = useContext(Context);
-    const { setIsOpenDialog } = context;
     const router = useRouter();
     const pathname = usePathname();
     return (
@@ -57,7 +54,6 @@ function DropMenu({
             <DropdownMenuContent align='end'>
                 <DropdownMenuItem
                     onClick={() => {
-                        setIsOpenDialog((prev) => !prev);
                         setIsOpen((prev) => !prev);
                         addOrUpdateParam('selected', String(row.id));
                     }}>

@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/dialog';
 import { EditForm } from './edit-form';
 import { removeSearchParam } from './params';
-import { usePathname, useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useContext, useEffect } from 'react';
 import { Context } from './context';
 import { Employees } from './db/schema';
 
@@ -21,6 +21,16 @@ export function EditDialog({ data }: { data: Employees[] }) {
     const { isOpenDialog, setIsOpenDialog } = context;
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const selected = searchParams.get('selected');
+    useEffect(() => {
+        if (selected && Number(selected) >= 0 && Number(selected) <= 9) {
+            setIsOpenDialog(true);
+        } else {
+            setIsOpenDialog(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selected]);
 
     const handleDialogClose = (open: boolean) => {
         if (!open) {
