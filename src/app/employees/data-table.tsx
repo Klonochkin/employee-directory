@@ -23,6 +23,7 @@ import {
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -102,7 +103,15 @@ export function DataTable<TData, TValue>({
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className='min-w-[12.5rem] text-center'>
+                                            id={cell.id}
+                                            className={cn(
+                                                'text-center',
+                                                cell.id.includes('action')
+                                                    ? 'min-w-[1rem]'
+                                                    : cell.id.includes('id')
+                                                      ? 'sr-only'
+                                                      : 'min-w-[12.5rem]',
+                                            )}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext(),
@@ -116,7 +125,7 @@ export function DataTable<TData, TValue>({
                                 <TableCell
                                     colSpan={columns.length}
                                     className='h-24 text-center'>
-                                    Список сотрудников пуст
+                                    Страница пустая
                                 </TableCell>
                             </TableRow>
                         )}
@@ -131,12 +140,7 @@ export function DataTable<TData, TValue>({
                         if (pageIndex === 1) {
                             removeSearchParam('page', pathname, router);
                         } else {
-                            addOrUpdateParam(
-                                'page',
-                                String(pageIndex),
-                                pathname,
-                                router,
-                            );
+                            addOrUpdateParam('page', String(pageIndex));
                         }
                     }}
                     disabled={
@@ -150,12 +154,7 @@ export function DataTable<TData, TValue>({
                     variant='outline'
                     size='sm'
                     onClick={() => {
-                        addOrUpdateParam(
-                            'page',
-                            String(pageIndex + 2),
-                            pathname,
-                            router,
-                        );
+                        addOrUpdateParam('page', String(pageIndex + 2));
                     }}
                     disabled={
                         Number(searchParams.get('page') ?? 1) * 10 >= count

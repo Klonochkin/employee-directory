@@ -1,32 +1,91 @@
 'use client';
 
-import { CellContext, ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import { DropdownMenuRadioGroupDemo } from '../dropdown-sortmenu';
 import { Employees } from '@/app/db/schema';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { addOrUpdateParam, removeSearchParam } from '../params';
+import { useState } from 'react';
+import { convertDateToText } from '../convert-date';
+import { usePathname, useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-function convertDate(info: CellContext<Employees, unknown>) {
-    const months = [
-        'января',
-        'февраля',
-        'марта',
-        'апреля',
-        'мая',
-        'июня',
-        'июля',
-        'августа',
-        'сентября',
-        'октября',
-        'ноября',
-        'декабря',
-    ];
-    const date = new Date(String(info.getValue()));
-    const result =
-        date.getDate() +
-        ' ' +
-        months[date.getMonth()] +
-        ' ' +
-        date.getFullYear();
-    return result;
+function DropMenu({
+    row,
+}: {
+    row: Row<{
+        id: number;
+        last_name: string;
+        first_name: string;
+        father_name: string;
+        bday: string;
+        position: string;
+        phone_number: string;
+    }>;
+}) {
+    const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+    return (
+        <DropdownMenu
+            onOpenChange={(open: boolean) => {
+                setIsOpen((prev) => !prev);
+                if (!open) {
+                    removeSearchParam('open', pathname, router);
+                }
+            }}
+            open={isOpen}>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    id='dropDownButton'
+                    variant='ghost'
+                    className='size-8 p-0'>
+                    <span className='sr-only'>Open menu</span>
+                    <MoreHorizontal />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+                <DropdownMenuItem
+                    onClick={() => {
+                        setIsOpen((prev) => !prev);
+                        addOrUpdateParam('selected', String(row.id));
+                    }}>
+                    <Pencil />
+                    Редактировать
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    className='bg-[#7c1515]'
+                    onClick={() => {
+                        const form: HTMLFormElement | null =
+                            document.querySelector('form');
+                        const nameInput = 'input_id';
+                        const input = document.getElementById(
+                            nameInput,
+                        ) as HTMLInputElement;
+                        if (input && row.getValue('id')) {
+                            input.value = row.getValue('id');
+                        }
+                        form?.requestSubmit();
+                        toast('Данные удалены', {
+                            action: {
+                                label: 'Скрыть',
+                                onClick: () => console.log('скрыт'),
+                            },
+                        });
+                    }}>
+                    <Trash2 />
+                    Удалить
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
 }
 
 export const columns: ColumnDef<Employees, unknown>[] = [
@@ -45,7 +104,7 @@ export const columns: ColumnDef<Employees, unknown>[] = [
     {
         accessorKey: 'bday',
         header: () => <DropdownMenuRadioGroupDemo></DropdownMenuRadioGroupDemo>,
-        cell: (info) => convertDate(info),
+        cell: (info) => convertDateToText(String(info.getValue())),
     },
     {
         accessorKey: 'position',
@@ -54,5 +113,16 @@ export const columns: ColumnDef<Employees, unknown>[] = [
     {
         accessorKey: 'phone_number',
         header: 'Номер телефона',
+    },
+    {
+        id: 'actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+            return <DropMenu row={row} />;
+        },
+    },
+    {
+        accessorKey: 'id',
+        header: '',
     },
 ];

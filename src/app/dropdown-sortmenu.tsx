@@ -19,7 +19,6 @@ export function DropdownMenuRadioGroupDemo() {
     const router = useRouter();
     const pathname = usePathname();
 
-    // Используем useEffect для инициализации состояния
     React.useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const sortParam = params.get('sort');
@@ -44,7 +43,7 @@ export function DropdownMenuRadioGroupDemo() {
                     <DropdownMenuItem
                         onClick={() => {
                             setPosition('desc');
-                            addOrUpdateParam('sort', 'desc', pathname, router);
+                            addOrUpdateParam('sort', 'desc');
                         }}>
                         <ArrowUp height='15' />
                         По убыванию
@@ -52,7 +51,7 @@ export function DropdownMenuRadioGroupDemo() {
                     <DropdownMenuItem
                         onClick={() => {
                             setPosition('asc');
-                            addOrUpdateParam('sort', 'asc', pathname, router);
+                            addOrUpdateParam('sort', 'asc');
                         }}>
                         <ArrowDown height='15' />
                         По возврастанию
