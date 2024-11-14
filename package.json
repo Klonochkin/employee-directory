@@ -29,7 +29,13 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devEngines": {
-    "node": "^18.20.2 || >=20.0.0"
+    "runtime": {
+      "name": "node",
+      "version": "^22.11.0"
+    },
+    "packageManager": {
+      "name": "pnpm"
+    }
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.0.3",
