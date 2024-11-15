@@ -6,7 +6,6 @@ import { convertDateToISO } from './convert-date';
 const db = drizzle(process.env.POSTGRES_URL!);
 
 export async function getEmployees(name = '', page: number, sort?: string) {
-    createEmployeesTable();
     let offset = (page - 1) * 10;
     offset = offset >= 0 ? offset : 0;
     name = name.toLowerCase();
@@ -299,25 +298,4 @@ export async function insertEmployees() {
     });
 
     return res;
-}
-
-export async function createEmployeesTable() {
-    const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS employee (
-            id SERIAL PRIMARY KEY,
-            last_name TEXT NOT NULL,
-            first_name TEXT NOT NULL,
-            father_name TEXT NOT NULL,
-            bday DATE NOT NULL,
-            position TEXT NOT NULL,
-            phone_number TEXT NOT NULL
-        );
-    `;
-
-    try {
-        await db.execute(createTableQuery);
-        console.log("Table 'employees' created successfully.");
-    } catch (error) {
-        console.error('Error creating table:', error);
-    }
 }
