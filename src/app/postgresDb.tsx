@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { employee } from '@/app/db/schema';
-import { sql, asc, desc, eq } from 'drizzle-orm';
+import { sql, asc, desc, eq, or, like } from 'drizzle-orm';
 import { convertDateToISO } from './convert-date';
 
 const db = drizzle(process.env.POSTGRES_URL!);
@@ -8,12 +8,17 @@ const db = drizzle(process.env.POSTGRES_URL!);
 export async function getEmployees(name = '', page: number, sort?: string) {
     let offset = (page - 1) * 10;
     offset = offset >= 0 ? offset : 0;
-    name = name.toLowerCase();
     const res = await db
         .select()
         .from(employee)
         .where(
-            sql`lower(${employee.first_name}) LIKE ${`%${name}%`} OR lower(${employee.last_name}) LIKE ${`%${name}%`} OR lower(${employee.father_name}) LIKE ${`%${name}%`}`,
+            name
+                ? or(
+                      like(employee.last_name, `%${name}%`),
+                      like(employee.first_name, `%${name}%`),
+                      like(employee.father_name, `%${name}%`),
+                  )
+                : undefined,
         )
         .limit(30)
         .offset(offset)
@@ -30,12 +35,17 @@ export async function getEmployees(name = '', page: number, sort?: string) {
 }
 
 export async function getTotalCount(name = '') {
-    name = name.toLowerCase();
     const res = await db
         .select({ count: sql`COUNT(*)` })
         .from(employee)
         .where(
-            sql`lower(${employee.first_name}) LIKE ${`%${name}%`} OR lower(${employee.last_name}) LIKE ${`%${name}%`} OR lower(${employee.father_name}) LIKE ${`%${name}%`}`,
+            name
+                ? or(
+                      like(employee.last_name, `%${name}%`),
+                      like(employee.first_name, `%${name}%`),
+                      like(employee.father_name, `%${name}%`),
+                  )
+                : undefined,
         );
     return Number(res[0]?.count) || 0;
 }
