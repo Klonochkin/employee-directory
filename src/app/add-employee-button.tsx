@@ -8,7 +8,7 @@ export function AddEmployee() {
     const { setIsOpenDialogAdd } = context;
     return (
         <Button
-            variant='ghost'
+            variant='outline'
             onClick={() => {
                 setIsOpenDialogAdd((prev) => !prev);
             }}>
