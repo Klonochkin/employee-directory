@@ -20,7 +20,7 @@ import { editSomething } from './server-actions';
 import { toast } from 'sonner';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Context } from './context';
-import { removeSeveralSearchParams } from './params';
+import { removeSearchParam } from './params';
 import { Employees } from './db/schema';
 export function EditForm({ data }: { data: Employees[] }) {
     const context = useContext(Context);
@@ -68,7 +68,7 @@ export function EditForm({ data }: { data: Employees[] }) {
         });
         setIsOpenDialogEdit((prev) => !prev);
 
-        removeSeveralSearchParams(['selected', 'open'], pathname, router);
+        removeSearchParam('selected', pathname, router);
     };
 
     return (

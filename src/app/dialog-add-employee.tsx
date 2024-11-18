@@ -12,19 +12,14 @@ import {
 import { useContext } from 'react';
 import { Context } from './context';
 import { AddEmployeeForm } from './add-employee-form';
-import { removeSearchParam } from './params';
-import { usePathname, useRouter } from 'next/navigation';
 
 export function AddEmployeeDialog() {
     const context = useContext(Context);
     const { isOpenDialogAdd, setIsOpenDialogAdd } = context;
-    const router = useRouter();
-    const pathname = usePathname();
 
     const handleDialogClose = (open: boolean) => {
         if (!open) {
             setIsOpenDialogAdd((prev) => !prev);
-            removeSearchParam('open', pathname, router);
         }
     };
 

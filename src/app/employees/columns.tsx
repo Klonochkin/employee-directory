@@ -30,15 +30,10 @@ function DropMenu({
     }>;
 }) {
     const [isOpen, setIsOpen] = useState(false);
-    // const router = useRouter();
-    // const pathname = usePathname();
     return (
         <DropdownMenu
-            onOpenChange={(open: boolean) => {
+            onOpenChange={() => {
                 setIsOpen((prev) => !prev);
-                if (open) {
-                    addOrUpdateParam('open', 'true');
-                }
             }}
             open={isOpen}>
             <DropdownMenuTrigger asChild>

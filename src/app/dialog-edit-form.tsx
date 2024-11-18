@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { EditForm } from './edit-form';
-import { removeSeveralSearchParams } from './params';
+import { removeSearchParam } from './params';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useContext, useEffect } from 'react';
 import { Context } from './context';
@@ -37,7 +37,7 @@ export function EditDialog({ data }: { data: Employees[] }) {
 
     const handleDialogClose = (open: boolean) => {
         if (!open) {
-            removeSeveralSearchParams(['selected', 'open'], pathname, router);
+            removeSearchParam('selected', pathname, router);
             setIsOpenDialog((prev) => !prev);
         }
     };

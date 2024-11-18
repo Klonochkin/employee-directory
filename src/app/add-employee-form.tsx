@@ -19,8 +19,6 @@ import { useContext } from 'react';
 import { toast } from 'sonner';
 import { Context } from './context';
 import { addSomething } from './server-actions';
-import { removeSearchParam } from './params';
-import { usePathname, useRouter } from 'next/navigation';
 export function AddEmployeeForm() {
     const context = useContext(Context);
     const { setIsOpenDialogAdd } = context;
@@ -37,9 +35,6 @@ export function AddEmployeeForm() {
         },
     });
 
-    const router = useRouter();
-    const pathname = usePathname();
-
     const onSubmit = () => {
         const form = document.getElementById('edit-form') as HTMLFormElement;
         form.requestSubmit();
@@ -50,7 +45,6 @@ export function AddEmployeeForm() {
             },
         });
         setIsOpenDialogAdd((prev) => !prev);
-        removeSearchParam('open', pathname, router);
     };
 
     return (
