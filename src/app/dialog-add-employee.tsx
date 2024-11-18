@@ -9,52 +9,38 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { EditForm } from './edit-form';
-import { removeSeveralSearchParams } from './params';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Context } from './context';
-import { Employees } from './db/schema';
+import { AddEmployeeForm } from './add-employee-form';
+import { removeSearchParam } from './params';
+import { usePathname, useRouter } from 'next/navigation';
 
-export function EditDialog({ data }: { data: Employees[] }) {
+export function AddEmployeeDialog() {
     const context = useContext(Context);
-    const {
-        isOpenDialogEdit: isOpenDialog,
-        setIsOpenDialogEdit: setIsOpenDialog,
-    } = context;
+    const { isOpenDialogAdd, setIsOpenDialogAdd } = context;
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
-    const selected = searchParams.get('selected');
-    useEffect(() => {
-        if (selected && Number(selected) >= 0 && Number(selected) <= 9) {
-            setIsOpenDialog(true);
-        } else {
-            setIsOpenDialog(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected]);
 
     const handleDialogClose = (open: boolean) => {
         if (!open) {
-            removeSeveralSearchParams(['selected', 'open'], pathname, router);
-            setIsOpenDialog((prev) => !prev);
+            setIsOpenDialogAdd((prev) => !prev);
+            removeSearchParam('open', pathname, router);
         }
     };
 
     return (
-        <Dialog open={isOpenDialog} onOpenChange={handleDialogClose}>
+        <Dialog open={isOpenDialogAdd} onOpenChange={handleDialogClose}>
             <DialogTrigger asChild>
                 <Button id='buttonDialog' variant='outline' className='sr-only'>
-                    Edit Profile
+                    Add employee
                 </Button>
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
-                    <DialogTitle>Редактирование</DialogTitle>
+                    <DialogTitle>Добавление сотрудника</DialogTitle>
                 </DialogHeader>
                 <div className='grid gap-4 py-4'>
-                    <EditForm data={data} />
+                    <AddEmployeeForm />
                 </div>
                 <DialogFooter className='sm:justify-start'>
                     <DialogClose asChild>

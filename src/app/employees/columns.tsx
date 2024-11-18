@@ -11,10 +11,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { addOrUpdateParam, removeSearchParam } from '../params';
+import { addOrUpdateParam } from '../params';
 import { useState } from 'react';
 import { convertDateToText } from '../convert-date';
-import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 function DropMenu({
@@ -31,14 +30,14 @@ function DropMenu({
     }>;
 }) {
     const [isOpen, setIsOpen] = useState(false);
-    const router = useRouter();
-    const pathname = usePathname();
+    // const router = useRouter();
+    // const pathname = usePathname();
     return (
         <DropdownMenu
             onOpenChange={(open: boolean) => {
                 setIsOpen((prev) => !prev);
-                if (!open) {
-                    removeSearchParam('open', pathname, router);
+                if (open) {
+                    addOrUpdateParam('open', 'true');
                 }
             }}
             open={isOpen}>

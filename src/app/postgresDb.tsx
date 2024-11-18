@@ -299,3 +299,12 @@ export async function insertEmployees() {
 
     return res;
 }
+
+export async function addEmployee(bday: string, other: UpdateEmployeeData) {
+    const bday_Date = convertDateToISO(bday);
+    const res = await db.insert(employee).values({
+        bday: bday_Date,
+        ...other,
+    });
+    return res;
+}
