@@ -3,7 +3,7 @@ import { employee } from '@/app/db/schema';
 import { sql, asc, desc, eq } from 'drizzle-orm';
 import { convertDateToISO } from './convert-date';
 
-const db = drizzle(process.env.DATABASE_URL!);
+const db = drizzle(process.env.POSTGRES_URL!);
 
 export async function getEmployees(name = '', page: number, sort?: string) {
     let offset = (page - 1) * 10;
@@ -77,7 +77,7 @@ export async function insertEmployees() {
         'Артем',
         'Иван',
         'Сергей',
-        'Е гор',
+        'Егор',
         'Никита',
         'Михаил',
         'Алексей',
