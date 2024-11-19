@@ -12,7 +12,17 @@ export async function getEmployees(name = '', page: number, sort?: string) {
         .select()
         .from(employee)
         .where(
-            sql`concat_ws(' ', ${employee.last_name}, ${employee.first_name}, ${employee.father_name}) LIKE ${`%${name}%`}`,
+            sql`concat_ws(' ', ${employee.last_name}, ${employee.first_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.last_name}, ${employee.father_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.last_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.father_name}, ${employee.last_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.last_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.first_name}, ${employee.last_name}) LIKE ${`%${name}%`}`,
         )
         .limit(30)
         .offset(offset)
@@ -33,7 +43,17 @@ export async function getTotalCount(name = '') {
         .select({ count: sql`COUNT(*)` })
         .from(employee)
         .where(
-            sql`concat_ws(' ', ${employee.last_name}, ${employee.first_name}, ${employee.father_name}) LIKE ${`%${name}%`} `,
+            sql`concat_ws(' ', ${employee.last_name}, ${employee.first_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.last_name}, ${employee.father_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.last_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.father_name}, ${employee.last_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.last_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.first_name}, ${employee.last_name}) LIKE ${`%${name}%`}`,
         );
     return Number(res[0]?.count) || 0;
 }
