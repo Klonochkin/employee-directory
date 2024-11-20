@@ -8,6 +8,8 @@ import { EditDialog } from './dialog-edit-form';
 import { Toaster } from 'sonner';
 import { ContextProvider } from './context';
 import { DataTableEmpty } from './employees/data-table-empty';
+import { AddEmployee } from './add-employee-button';
+import { AddEmployeeDialog } from './dialog-add-employee';
 
 export default async function HomePage({
     searchParams,
@@ -21,8 +23,9 @@ export default async function HomePage({
     return (
         <ContextProvider>
             <div className='mt-4 flex flex-col items-center'>
-                <div className='mb-10'>
-                    <Search></Search>
+                <div className='mb-10 flex flex-col'>
+                    <Search />
+                    <AddEmployee />
                 </div>
                 {data && data.length !== 0 ? (
                     <DataTable
@@ -36,6 +39,7 @@ export default async function HomePage({
                 )}
                 <DeleteForm />
                 <EditDialog data={data} />
+                <AddEmployeeDialog />
                 <Toaster />
             </div>
         </ContextProvider>

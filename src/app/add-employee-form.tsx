@@ -15,18 +15,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DatePicker } from './date-picker';
-import { useContext, useEffect } from 'react';
-import { editSomething } from './server-actions';
+import { useContext } from 'react';
 import { toast } from 'sonner';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Context } from './context';
-import { removeSearchParam } from './params';
-import { Employees } from './db/schema';
-export function EditForm({ data }: { data: Employees[] }) {
+import { addSomething } from './server-actions';
+export function AddEmployeeForm() {
     const context = useContext(Context);
-    const { setIsOpenDialogEdit } = context;
-    const searchParams = useSearchParams();
-    const selected = searchParams.get('selected');
+    const { setIsOpenDialogAdd } = context;
     const form = useForm<z.infer<typeof Schemas>>({
         resolver: zodResolver(Schemas),
         defaultValues: {
@@ -40,40 +35,21 @@ export function EditForm({ data }: { data: Employees[] }) {
         },
     });
 
-    const router = useRouter();
-    const pathname = usePathname();
-    useEffect(() => {
-        if (selected && data) {
-            form.reset({
-                last_name: data[Number(selected)].last_name,
-                first_name: data[Number(selected)].first_name,
-                father_name: data[Number(selected)].father_name,
-                bday: data[Number(selected)].bday,
-                position: data[Number(selected)].position,
-                phone_number: data[Number(selected)].phone_number,
-                id: String(data[Number(selected)].id),
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected]);
-
     const onSubmit = () => {
         const form = document.getElementById('edit-form') as HTMLFormElement;
         form.requestSubmit();
-        toast('Данные обновлены', {
+        toast('Сотрудник добавлен', {
             action: {
                 label: 'Скрыть',
                 onClick: () => console.log('скрыт'),
             },
         });
-        setIsOpenDialogEdit((prev) => !prev);
-
-        removeSearchParam('selected', pathname, router);
+        setIsOpenDialogAdd((prev) => !prev);
     };
 
     return (
         <Form {...form}>
-            <form id='edit-form' action={editSomething} className='space-y-8'>
+            <form id='edit-form' action={addSomething} className='space-y-8'>
                 <FormField
                     control={form.control}
                     name='last_name'

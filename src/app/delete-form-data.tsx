@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteSomething } from './delete-data';
+import { deleteSomething } from './server-actions';
 
 export const DeleteForm = () => {
     return (

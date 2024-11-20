@@ -1,11 +1,7 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    removeSearchParam,
-    removeSeveralSearchParams,
-    addAndRemoveParam,
-} from '@/app/params';
+import { removeSearchParam, addAndRemoveParam } from '@/app/params';
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -22,14 +18,6 @@ export function Search() {
         if (inputRef.current) {
             inputRef.current.value = params.get('name') ?? '';
         }
-        const removeList = [];
-        if (params.get('open') !== null) {
-            removeList.push('open');
-        }
-        if (removeList.length !== 0) {
-            removeSeveralSearchParams(removeList, pathname, router);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -44,7 +32,7 @@ export function Search() {
                         if (value.trim() === '') {
                             removeSearchParam('name', pathname, router);
                         } else {
-                            addAndRemoveParam('name', 'page', value);
+                            addAndRemoveParam('name', 'page', value.trim());
                         }
                     }}
                 />

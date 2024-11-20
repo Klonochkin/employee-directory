@@ -8,12 +8,21 @@ const db = drizzle(process.env.POSTGRES_URL!);
 export async function getEmployees(name = '', page: number, sort?: string) {
     let offset = (page - 1) * 10;
     offset = offset >= 0 ? offset : 0;
-    name = name.toLowerCase();
     const res = await db
         .select()
         .from(employee)
         .where(
-            sql`lower(${employee.first_name}) LIKE ${`%${name}%`} OR lower(${employee.last_name}) LIKE ${`%${name}%`} OR lower(${employee.father_name}) LIKE ${`%${name}%`}`,
+            sql`concat_ws(' ', ${employee.last_name}, ${employee.first_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.last_name}, ${employee.father_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.last_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.father_name}, ${employee.last_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.last_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.first_name}, ${employee.last_name}) LIKE ${`%${name}%`}`,
         )
         .limit(30)
         .offset(offset)
@@ -30,12 +39,21 @@ export async function getEmployees(name = '', page: number, sort?: string) {
 }
 
 export async function getTotalCount(name = '') {
-    name = name.toLowerCase();
     const res = await db
         .select({ count: sql`COUNT(*)` })
         .from(employee)
         .where(
-            sql`lower(${employee.first_name}) LIKE ${`%${name}%`} OR lower(${employee.last_name}) LIKE ${`%${name}%`} OR lower(${employee.father_name}) LIKE ${`%${name}%`}`,
+            sql`concat_ws(' ', ${employee.last_name}, ${employee.first_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.last_name}, ${employee.father_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.last_name}, ${employee.father_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.first_name}, ${employee.father_name}, ${employee.last_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.last_name}, ${employee.first_name}) LIKE ${`%${name}%`}
+            OR
+            concat_ws(' ', ${employee.father_name}, ${employee.first_name}, ${employee.last_name}) LIKE ${`%${name}%`}`,
         );
     return Number(res[0]?.count) || 0;
 }
@@ -297,5 +315,14 @@ export async function insertEmployees() {
         phone_number: phone_number,
     });
 
+    return res;
+}
+
+export async function addEmployee(bday: string, other: UpdateEmployeeData) {
+    const bday_Date = convertDateToISO(bday);
+    const res = await db.insert(employee).values({
+        bday: bday_Date,
+        ...other,
+    });
     return res;
 }
